@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta charset="UTF-8">
+<title>യൂണിറ്റ് 1 — ഓർഗാനിക് നാമകരണവും ഐസോമെറിസവും | Study Tool</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root{
+  --ink:#1f2937;
+  --paper:#faf6ee;
+  --chain:#2b6e63;
+  --chain-dark:#184d44;
+  --branch:#c1622d;
+  --branch-light:#f2e1d2;
+  --func:#7b4fa0;
+  --line:#e1d7c3;
+  --card:#ffffff;
+  --mono: 'Courier New', ui-monospace, monospace;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:'Noto Sans Malayalam','Manjari',system-ui,sans-serif;
+  line-height:1.55;
+}
+header{
+  background:linear-gradient(135deg,var(--chain-dark),var(--chain) 65%);
+  color:#fff; padding:20px 18px 60px; position:relative; overflow:hidden;
+}
+header .backbone{ position:absolute; inset:0; opacity:.15;
+  background-image: repeating-linear-gradient(115deg, transparent 0 38px, #fff 38px 40px); }
+header h1{ margin:0 0 4px; font-size:1.5rem; position:relative; z-index:1; }
+header p.sub{ margin:0 0 12px; opacity:.85; font-size:.92rem; position:relative; z-index:1; }
+.lang-toggle{ position:relative; z-index:1; display:inline-flex; gap:4px; background:rgba(255,255,255,.15); padding:4px; border-radius:20px; }
+.lang-toggle button{
+  border:none; background:transparent; color:#fff; padding:6px 16px; border-radius:16px;
+  cursor:pointer; font-family:inherit; font-size:.85rem; font-weight:600; opacity:.7;
+}
+.lang-toggle button.active{ background:#fff; color:var(--chain-dark); opacity:1; }
+.wrap{ max-width:960px; margin:-40px auto 40px; padding:0 14px; position:relative; z-index:2; }
+nav.tabs{
+  display:flex; flex-wrap:wrap; gap:8px; background:var(--card); border-radius:14px;
+  padding:10px; box-shadow:0 8px 24px rgba(24,77,68,.12); margin-bottom:18px;
+  position:sticky; top:10px; z-index:5;
+}
+nav.tabs button{
+  border:none; background:var(--paper); color:var(--chain-dark); padding:9px 14px;
+  border-radius:9px; cursor:pointer; font-size:.9rem; font-weight:600; font-family:inherit; transition:.15s;
+}
+nav.tabs button.active{ background:var(--chain); color:#fff; }
+nav.tabs button:hover{ filter:brightness(1.05); }
+.panel{ display:none; }
+.panel.active{ display:block; animation:fade .25s ease; }
+@keyframes fade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
+.card{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin-bottom:16px; box-shadow:0 2px 10px rgba(31,41,55,.04); }
+h2.section-title{ color:var(--chain-dark); border-bottom:3px solid var(--branch); display:inline-block; padding-bottom:4px; margin-top:0; font-size:1.15rem; }
+h3.sub-title{ color:var(--func); margin:18px 0 8px; font-size:1rem; }
+.formula-box{ background:var(--branch-light); border-left:4px solid var(--branch); padding:10px 14px; border-radius:8px; font-family:var(--mono); margin:10px 0; font-size:.95rem; overflow-x:auto; }
+.chain{ font-family:var(--mono); background:#f2f7f5; border:1px dashed var(--chain); padding:8px 12px; border-radius:8px; display:inline-block; margin:6px 6px 6px 0; }
+table{ width:100%; border-collapse:collapse; margin:10px 0; font-size:.92rem; }
+th,td{ border:1px solid var(--line); padding:8px 10px; text-align:left; }
+th{ background:var(--chain); color:#fff; }
+tr:nth-child(even) td{ background:#f7f4ec; }
+table.compact th, table.compact td{ padding:5px 8px; font-size:.85rem; }
+ul{ padding-left:20px; } li{ margin-bottom:6px; }
+.tag{ display:inline-block; background:var(--func); color:#fff; font-size:.72rem; padding:2px 8px; border-radius:20px; margin-left:6px; }
+.step-list li{ margin-bottom:10px; }
+.quiz-opts button{ display:block; width:100%; text-align:left; margin:6px 0; padding:10px 14px; border:1px solid var(--line); background:#fff; border-radius:9px; cursor:pointer; font-family:inherit; font-size:.92rem; }
+.quiz-opts button.correct{ background:#dff3e8; border-color:var(--chain); font-weight:600; }
+.quiz-opts button.wrong{ background:#fbe4e0; border-color:var(--branch); }
+.quiz-opts button[disabled]{ cursor:default; }
+.quiz-nav{ display:flex; justify-content:space-between; margin-top:14px; }
+.quiz-nav button:disabled{ opacity:.4; cursor:default; }
+.score-bar{ background:var(--chain-dark); color:#fff; border-radius:10px; padding:10px 16px; margin-bottom:14px; font-size:.9rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+.btn{ background:var(--branch); color:#fff; border:none; padding:9px 16px; border-radius:8px; cursor:pointer; font-family:inherit; font-weight:600; }
+.btn.secondary{ background:var(--chain); }
+.teacher-share{ margin-bottom:14px; display:flex; gap:8px; flex-wrap:wrap; }
+.teacher-share .btn{ background:var(--func); flex:1; min-width:200px; }
+.teacher-share .btn.secondary{ background:var(--chain); }
+.share-toast{ display:none; margin-top:12px; background:var(--chain-dark); color:#fff; padding:9px 14px; border-radius:8px; font-size:.85rem; text-align:center; }
+.share-toast.show{ display:block; }
+.mqp-header{ text-align:center; margin-bottom:14px; }
+.mqp-header h2{ margin:2px 0; color:var(--chain-dark); }
+.mqp-meta{ display:flex; justify-content:space-between; font-size:.85rem; margin:6px 0 16px; }
+.mqp-section-title{ background:var(--branch); color:#fff; padding:5px 12px; border-radius:6px; display:inline-block; margin:14px 0 8px; font-size:.9rem; }
+.mqp-q{ margin-bottom:12px; } .mqp-q b{ color:var(--chain-dark); }
+.exam-tip{ background:#eef7f2; border:1px solid var(--chain); border-radius:8px; padding:10px 14px; margin-top:16px; font-size:.9rem; }
+.revision-sheet h3.sub-title{ margin-top:16px; }
+footer.note{ text-align:center; font-size:.78rem; color:#8a8067; margin:30px 0 10px; }
+
+/* ---- Bilingual toggle logic ---- */
+.lang-en{ display:none; }
+body.show-en .lang-ml{ display:none; }
+body.show-en .lang-en{ display:block; }
+
+@media print{
+  header, nav.tabs, .no-print{ display:none !important; }
+  .panel{ display:none !important; }
+  .panel.print-target{ display:block !important; }
+  .wrap{ margin:0; }
+  .card{ box-shadow:none; border:1px solid #999; }
+  body{ background:#fff; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="backbone"></div>
+  <h1 data-ml="ഓർഗാനിക് സംയുക്തങ്ങളുടെ നാമകരണവും ഐസോമെറിസവും" data-en="Nomenclature &amp; Isomerism of Organic Compounds">ഓർഗാനിക് സംയുക്തങ്ങളുടെ നാമകരണവും ഐസോമെറിസവും</h1>
+  <p class="sub" data-ml="രസതന്ത്രം · സ്റ്റാൻഡേർഡ് 10 · യൂണിറ്റ് 1 — സമ്പൂർണ പഠനോപകരണം" data-en="Chemistry · Class 10 · Unit 1 — Complete Study Tool">രസതന്ത്രം · സ്റ്റാൻഡേർഡ് 10 · യൂണിറ്റ് 1 — സമ്പൂർണ പഠനോപകരണം</p>
+  <div class="lang-toggle no-print">
+    <button id="langMlBtn" class="active" onclick="setLang('ml')">മലയാളം</button>
+    <button id="langEnBtn" onclick="setLang('en')">English</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <nav class="tabs no-print">
+    <button data-tab="notes" class="active" data-ml="📘 സംഗ്രഹം" data-en="📘 Notes">📘 സംഗ്രഹം</button>
+    <button data-tab="revision" data-ml="⚡ ക്വിക്ക് റിവിഷൻ" data-en="⚡ Quick Revision">⚡ ക്വിക്ക് റിവിഷൻ</button>
+    <button data-tab="rules" data-ml="🧪 IUPAC നിയമങ്ങൾ" data-en="🧪 IUPAC Rules">🧪 IUPAC നിയമങ്ങൾ</button>
+    <button data-tab="fgroups" data-ml="⚗️ ഫങ്ഷണൽ ഗ്രൂപ്പുകൾ" data-en="⚗️ Functional Groups">⚗️ ഫങ്ഷണൽ ഗ്രൂപ്പുകൾ</button>
+    <button data-tab="isomer" data-ml="🔀 ഐസോമെറിസം" data-en="🔀 Isomerism">🔀 ഐസോമെറിസം</button>
+    <button data-tab="quiz" data-ml="✅ ക്വിസ്" data-en="✅ Quiz">✅ ക്വിസ്</button>
+    <button data-tab="mqp" data-ml="📝 മാതൃകാ ചോദ്യപേപ്പർ" data-en="📝 Model Question Paper">📝 മാതൃകാ ചോദ്യപേപ്പർ</button>
+    <button id="printBtn" onclick="printCurrent()" style="margin-left:auto;background:var(--chain-dark);color:#fff;" data-ml="🖨️ പ്രിന്റ് ചെയ്യുക" data-en="🖨️ Print">🖨️ പ്രിന്റ് ചെയ്യുക</button>
+  </nav>
+
+  <!-- ================= NOTES ================= -->
+  <section class="panel active" id="notes">
+    <div class="card">
+      <div class="lang-ml">
+        <h2 class="section-title">ചുരുക്ക സംഗ്രഹം</h2>
+        <ul>
+          <li>കാർബണിക സംയുക്തങ്ങളുടെ വൈവിധ്യത്തിന് കാരണം കാർബൺ ആറ്റങ്ങളുടെ പരസ്പര ബന്ധന ശേഷിയും (catenation), ഹൈഡ്രജൻ, ഓക്സിജൻ, നൈട്രജൻ തുടങ്ങിയ മൂലകങ്ങളുമായി ചേരാനുള്ള കഴിവുമാണ്.</li>
+          <li>ഒരേ തന്മാത്രാസൂത്രമുള്ള ഹൈഡ്രോകാർബണുകളുടെ ഘടനാവാക്യം (ശാഖകളുടെ ക്രമീകരണം) വ്യത്യസ്തമായിരിക്കാം.</li>
+          <li>IUPAC നാമകരണത്തിൽ ഏറ്റവും നീളം കൂടിയ കാർബൺ ചെയിൻ പ്രധാന ചെയിനായും ബാക്കിയുള്ളവ ശാഖ (ആൽക്കൈൽ ഗ്രൂപ്പ്) ആയും കണക്കാക്കുന്നു.</li>
+          <li>ശാഖകൾക്ക് ഏറ്റവും കുറഞ്ഞ സ്ഥാനസംഖ്യ ലഭിക്കുന്ന വിധത്തിലാണ് കാർബൺ ആറ്റങ്ങൾക്ക് നമ്പർ നൽകേണ്ടത്.</li>
+          <li>ഒരേ ശാഖ ഒന്നിലധികം തവണ വന്നാൽ ഡൈ, ട്രൈ, ടെട്രാ എന്നീ പ്രത്യയങ്ങൾ ഉപയോഗിക്കണം; സ്ഥാനസംഖ്യകൾ കോമ ഉപയോഗിച്ച് വേർതിരിക്കണം.</li>
+          <li>അക്കങ്ങളും അക്ഷരങ്ങളും തമ്മിൽ ഹൈഫൻ (–) ഉപയോഗിച്ച് വേർതിരിക്കണം.</li>
+          <li>ദ്വിബന്ധനം (C=C) ഉള്ളവ ആൽക്കീനുകൾ (–ene), ത്രിബന്ധനം (C≡C) ഉള്ളവ ആൽക്കൈനുകൾ (–yne) എന്നറിയപ്പെടുന്നു.</li>
+          <li>ഫങ്ഷണൽ ഗ്രൂപ്പ് എന്നത് ഒരു സംയുക്തത്തിന്റെ സവിശേഷ രാസ-ഭൗതിക ഗുണങ്ങൾ നിർണ്ണയിക്കുന്ന ആറ്റം/ആറ്റഗ്രൂപ്പ് ആണ്.</li>
+          <li>ഫങ്ഷണൽ ഗ്രൂപ്പ് ഉള്ള ചെയിനിനെ പ്രധാന ചെയിനായി കണക്കാക്കണം; ഫങ്ഷണൽ ഗ്രൂപ്പിന് ഏറ്റവും കുറഞ്ഞ സ്ഥാനസംഖ്യ നൽകണം.</li>
+          <li>ഒരേ തന്മാത്രാസൂത്രവും വ്യത്യസ്ത ഗുണങ്ങളുമുള്ള സംയുക്തങ്ങളെ ഐസോമെറുകൾ എന്നു വിളിക്കുന്നു.</li>
+        </ul>
+        <h3 class="sub-title">രണ്ട് ഉദാഹരണ ഹൈഡ്രോകാർബണുകൾ</h3>
+        <div class="chain">CH₃–CH₂–CH₂–CH₂–CH₃ &nbsp;(ഹൈഡ്രോകാർബൺ I — നീളൻ ചെയിൻ)</div><br>
+        <div class="chain">CH₃–CH(CH₃)–CH₂–CH₃ &nbsp;(ഹൈഡ്രോകാർബൺ II — ശാഖയുള്ളത്)</div>
+        <p>ഇവ രണ്ടും C₅H₁₂ എന്ന ഒരേ തന്മാത്രാസൂത്രമുള്ളവയാണ്, പക്ഷേ ഘടനാവാക്യം വ്യത്യസ്തമാണ്.</p>
+      </div>
+      <div class="lang-en">
+        <h2 class="section-title">Chapter Summary</h2>
+        <ul>
+          <li>The huge variety of organic compounds arises from carbon's ability to bond with itself (catenation) and with elements such as hydrogen, oxygen and nitrogen.</li>
+          <li>Compounds with the same molecular formula can have different structural formulas (different arrangement of branches).</li>
+          <li>In IUPAC nomenclature, the longest carbon chain is the parent chain; the rest are treated as branches (alkyl groups).</li>
+          <li>Carbon atoms must be numbered so that the branches get the lowest possible locants.</li>
+          <li>If the same branch occurs more than once, use di, tri, tetra, and separate the locants with commas.</li>
+          <li>A hyphen (–) must separate numbers from letters in an IUPAC name.</li>
+          <li>Chains with a double bond (C=C) are alkenes (–ene); with a triple bond (C≡C) are alkynes (–yne).</li>
+          <li>A functional group is the atom/group attached to carbon that determines a compound's characteristic properties.</li>
+          <li>The chain containing the functional group is the parent chain, and the FG must get the lowest locant.</li>
+          <li>Compounds with the same molecular formula but different properties are called isomers.</li>
+        </ul>
+        <h3 class="sub-title">Two Example Hydrocarbons</h3>
+        <div class="chain">CH₃–CH₂–CH₂–CH₂–CH₃ &nbsp;(Hydrocarbon I — straight chain)</div><br>
+        <div class="chain">CH₃–CH(CH₃)–CH₂–CH₃ &nbsp;(Hydrocarbon II — branched)</div>
+        <p>Both have the same molecular formula C₅H₁₂, but different structural formulas.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= QUICK REVISION ================= -->
+  <section class="panel" id="revision">
+    <div class="card revision-sheet">
+      <div class="lang-ml">
+        <h2 class="section-title">⚡ ക്വിക്ക് റിവിഷൻ ഷീറ്റ്</h2>
+        <h3 class="sub-title">🔹 ശാഖയുള്ള ആൽക്കെയ്ൻ നാമകരണം — 4 ഘട്ടങ്ങൾ</h3>
+        <div class="formula-box">1) നീളൻ ചെയിൻ കണ്ടെത്തുക → 2) ശാഖയ്ക്ക് കുറഞ്ഞ നമ്പർ → 3) di/tri/tetra + കോമ → 4) ഹൈഫൻ</div>
+        <table class="compact"><tr><th>ശാഖ</th><th>ഘടന</th></tr>
+          <tr><td>മീഥൈൽ</td><td>–CH₃</td></tr><tr><td>ഈഥൈൽ</td><td>–CH₂CH₃</td></tr><tr><td>പ്രൊപ്പൈൽ</td><td>–CH₂CH₂CH₃</td></tr></table>
+        <h3 class="sub-title">🔹 ബന്ധന പ്രത്യയങ്ങൾ</h3>
+        <table class="compact"><tr><th>ബന്ധനം</th><th>പ്രത്യയം</th><th>ഉദാ.</th></tr>
+          <tr><td>C–C</td><td>–ane</td><td>ബ്യൂട്ടെയ്ൻ</td></tr><tr><td>C=C</td><td>–ene</td><td>ബ്യൂട്ട്-1-ഈൻ</td></tr><tr><td>C≡C</td><td>–yne</td><td>ബ്യൂട്ട്-1-ഐൻ</td></tr></table>
+        <h3 class="sub-title">🔹 ഫങ്ഷണൽ ഗ്രൂപ്പ് ചീറ്റ്ഷീറ്റ്</h3>
+        <table class="compact"><tr><th>ഗ്രൂപ്പ്</th><th>കുടുംബം</th><th>പ്രത്യയം</th></tr>
+          <tr><td>–OH</td><td>ആൽക്കഹോൾ</td><td>e→ol</td></tr><tr><td>–CHO</td><td>ആൽഡിഹൈഡ്</td><td>e→al</td></tr>
+          <tr><td>&gt;C=O</td><td>കീറ്റോൺ</td><td>e→one</td></tr><tr><td>–COOH</td><td>കാർബോക്സിലിക് ആസിഡ്</td><td>e→oic acid</td></tr>
+          <tr><td>–O–R</td><td>ഈഥർ</td><td>alkoxy+ane</td></tr><tr><td>–F/Cl/Br/I</td><td>ഹാലോ</td><td>halo+ane</td></tr></table>
+        <h3 class="sub-title">🔹 ഐസോമെറിസം — 4 തരങ്ങൾ</h3>
+        <table class="compact"><tr><th>തരം</th><th>വ്യത്യാസം</th><th>മാതൃക</th></tr>
+          <tr><td>ചെയിൻ</td><td>ചെയിനിന്റെ ശാഖ ഘടന</td><td>n-ബ്യൂട്ടെയ്ൻ/ഐസോബ്യൂട്ടെയ്ൻ</td></tr>
+          <tr><td>പൊസിഷൻ</td><td>FG/ബന്ധന സ്ഥാനം</td><td>പ്രൊപ്പൻ-1-ഓൾ/2-ഓൾ</td></tr>
+          <tr><td>ഫങ്ഷണൽ</td><td>ഫങ്ഷണൽ ഗ്രൂപ്പ് വ്യത്യസ്തം</td><td>എഥനോൾ/മീഥോക്സിമീഥെയ്ൻ</td></tr>
+          <tr><td>മെറ്റാമെറിസം</td><td>ഇരുവശത്തെയും ആൽക്കൈൽ ഗ്രൂപ്പ്</td><td>ഈഥോക്സിഈഥെയ്ൻ/മീഥോക്സിപ്രൊപ്പെയ്ൻ</td></tr></table>
+        <h3 class="sub-title">🔹 സൂത്രവാക്യങ്ങൾ</h3>
+        <div class="formula-box">Alkane–e+ol→Alkanol &nbsp;|&nbsp; Alkane–e+al→Alkanal</div>
+        <div class="formula-box">Alkane–e+one→Alkanone &nbsp;|&nbsp; Alkane–e+oic acid→Alkanoic acid</div>
+        <p class="exam-tip">📌 പരീക്ഷാ ടിപ്പ്: ഫങ്ഷണൽ ഗ്രൂപ്പ് കണ്ടെത്തുക → നീളൻ ചെയിൻ കണ്ടെത്തുക → കുറഞ്ഞ നമ്പർ വരും വിധം എണ്ണുക → ശാഖകൾ ചേർത്ത് പേര് പൂർത്തിയാക്കുക.</p>
+      </div>
+      <div class="lang-en">
+        <h2 class="section-title">⚡ Quick Revision Sheet</h2>
+        <h3 class="sub-title">🔹 Naming a Branched Alkane — 4 Steps</h3>
+        <div class="formula-box">1) Find longest chain → 2) Lowest locants for branches → 3) di/tri/tetra + commas → 4) hyphens</div>
+        <table class="compact"><tr><th>Branch</th><th>Structure</th></tr>
+          <tr><td>Methyl</td><td>–CH₃</td></tr><tr><td>Ethyl</td><td>–CH₂CH₃</td></tr><tr><td>Propyl</td><td>–CH₂CH₂CH₃</td></tr></table>
+        <h3 class="sub-title">🔹 Bond Suffixes</h3>
+        <table class="compact"><tr><th>Bond</th><th>Suffix</th><th>Ex.</th></tr>
+          <tr><td>C–C</td><td>–ane</td><td>Butane</td></tr><tr><td>C=C</td><td>–ene</td><td>But-1-ene</td></tr><tr><td>C≡C</td><td>–yne</td><td>But-1-yne</td></tr></table>
+        <h3 class="sub-title">🔹 Functional Group Cheat-Sheet</h3>
+        <table class="compact"><tr><th>Group</th><th>Family</th><th>Suffix</th></tr>
+          <tr><td>–OH</td><td>Alcohol</td><td>e→ol</td></tr><tr><td>–CHO</td><td>Aldehyde</td><td>e→al</td></tr>
+          <tr><td>&gt;C=O</td><td>Ketone</td><td>e→one</td></tr><tr><td>–COOH</td><td>Carboxylic acid</td><td>e→oic acid</td></tr>
+          <tr><td>–O–R</td><td>Ether</td><td>alkoxy+ane</td></tr><tr><td>–F/Cl/Br/I</td><td>Halo compound</td><td>halo+ane</td></tr></table>
+        <h3 class="sub-title">🔹 Isomerism — 4 Types</h3>
+        <table class="compact"><tr><th>Type</th><th>What differs</th><th>Example</th></tr>
+          <tr><td>Chain</td><td>Branching of chain</td><td>n-Butane/Isobutane</td></tr>
+          <tr><td>Position</td><td>Locant of FG/bond</td><td>Propan-1-ol/2-ol</td></tr>
+          <tr><td>Functional</td><td>FG itself differs</td><td>Ethanol/Methoxymethane</td></tr>
+          <tr><td>Metamerism</td><td>Alkyl groups on either side</td><td>Ethoxyethane/Methoxypropane</td></tr></table>
+        <h3 class="sub-title">🔹 Formulas</h3>
+        <div class="formula-box">Alkane–e+ol→Alkanol &nbsp;|&nbsp; Alkane–e+al→Alkanal</div>
+        <div class="formula-box">Alkane–e+one→Alkanone &nbsp;|&nbsp; Alkane–e+oic acid→Alkanoic acid</div>
+        <p class="exam-tip">📌 Exam tip: Spot the functional group → find the longest chain → number for lowest locant → add branch names.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RULES ================= -->
+  <section class="panel" id="rules">
+    <div class="card">
+      <div class="lang-ml">
+        <h2 class="section-title">നാമകരണ നിയമങ്ങളും സൂത്രവാക്യങ്ങളും</h2>
+        <h3 class="sub-title">1. ശാഖയുള്ള ആൽക്കെയ്‌നുകൾ</h3>
+        <div class="formula-box">ശാഖയുടെ സ്ഥാനസംഖ്യ + ഹൈഫൻ + ആൽക്കൈൽ ഗ്രൂപ്പിന്റെ പേര് + പദമൂലം + പിൻപ്രത്യയം (ഐൻ)</div>
+        <ul class="step-list">
+          <li><b>ഘട്ടം 1:</b> നീളം കൂടിയ ചെയിൻ പ്രധാന ചെയിനായി തിരഞ്ഞെടുക്കുക.</li>
+          <li><b>ഘട്ടം 2:</b> ശാഖയ്ക്ക് കുറഞ്ഞ സ്ഥാനസംഖ്യ വരുന്ന വിധം നമ്പർ ചെയ്യുക.</li>
+          <li><b>ഘട്ടം 3:</b> ഒരേ ശാഖ ആവർത്തിച്ചാൽ di/tri/tetra + കോമ ഉപയോഗിക്കുക.</li>
+          <li><b>ഘട്ടം 4:</b> അക്കവും അക്ഷരവും തമ്മിൽ ഹൈഫൻ ഉപയോഗിക്കുക.</li>
+        </ul>
+        <h3 class="sub-title">ആൽക്കൈൽ ഗ്രൂപ്പുകൾ</h3>
+        <table><tr><th>ആൽക്കൈൽ ഗ്രൂപ്പ്</th><th>ഘടന</th></tr>
+          <tr><td>മീഥൈൽ (Methyl)</td><td>–CH₃</td></tr>
+          <tr><td>ഈഥൈൽ (Ethyl)</td><td>–CH₂–CH₃</td></tr>
+          <tr><td>പ്രൊപ്പൈൽ (Propyl)</td><td>–CH₂–CH₂–CH₃</td></tr></table>
+        <h3 class="sub-title">2. അപൂരിത ഹൈഡ്രോകാർബണുകൾ</h3>
+        <div class="formula-box">ആൽക്കീൻ = പദമൂലം + ഹൈഫൻ + ദ്വിബന്ധന സ്ഥാനം + ഹൈഫൻ + ഈൻ</div>
+        <div class="formula-box">ആൽക്കൈൻ = പദമൂലം + ഹൈഫൻ + ത്രിബന്ധന സ്ഥാനം + ഹൈഫൻ + ഐൻ</div>
+        <ul>
+          <li>CH₂=CH–CH₂–CH₃ → <b>ബ്യൂട്ട്–1–ഈൻ</b></li>
+          <li>CH₃–CH=CH–CH₃ → <b>ബ്യൂട്ട്–2–ഈൻ</b></li>
+          <li>CH≡C–CH₂–CH₃ → <b>ബ്യൂട്ട്–1–ഐൻ</b></li>
+        </ul>
+        <h3 class="sub-title">3. ഫങ്ഷണൽ ഗ്രൂപ്പ് പ്രത്യയങ്ങൾ</h3>
+        <table><tr><th>ഫങ്ഷണൽ ഗ്രൂപ്പ്</th><th>പൊതു നാമം</th><th>രൂപീകരണ സൂത്രം</th></tr>
+          <tr><td>–OH</td><td>ആൽക്കഹോൾ</td><td>Alkane–e+ol→Alkanol</td></tr>
+          <tr><td>–COOH</td><td>കാർബോക്സിലിക് ആസിഡ്</td><td>Alkane–e+oic acid→Alkanoic acid</td></tr>
+          <tr><td>–CHO</td><td>ആൽഡിഹൈഡ്</td><td>Alkane–e+al→Alkanal</td></tr>
+          <tr><td>&gt;C=O</td><td>കീറ്റോൺ</td><td>Alkane–e+one→Alkanone</td></tr></table>
+        <h3 class="sub-title">4. ഹാലോ സംയുക്തങ്ങൾ &amp; ഈഥറുകൾ</h3>
+        <div class="formula-box">ഹാലോ ഗ്രൂപ്പിന്റെ സ്ഥാനം + ഹൈഫൻ + ഹാലോ പേര് + ആൽക്കെയ്‌നിന്റെ പേര്</div>
+        <p>CH₃–CH₂–CH₂–Cl → <b>1–ക്ലോറോപ്രൊപ്പെയ്ൻ</b></p>
+        <div class="formula-box">ആൽക്കോക്സി ഗ്രൂപ്പ് (–O–R) + ആൽക്കെയ്‌നിന്റെ പേര് → ഈഥർ നാമം</div>
+        <p>CH₃–O–CH₂–CH₃ → <b>മീഥോക്സിഈഥെയ്ൻ</b></p>
+      </div>
+      <div class="lang-en">
+        <h2 class="section-title">Naming Rules &amp; Formulas</h2>
+        <h3 class="sub-title">1. Branched Alkanes</h3>
+        <div class="formula-box">Locant of branch + hyphen + alkyl group name + root word + suffix (ane)</div>
+        <ul class="step-list">
+          <li><b>Step 1:</b> Choose the longest chain as the parent chain.</li>
+          <li><b>Step 2:</b> Number so the branch gets the lowest locant.</li>
+          <li><b>Step 3:</b> Repeated branch → di/tri/tetra + commas.</li>
+          <li><b>Step 4:</b> Hyphen between a number and a letter.</li>
+        </ul>
+        <h3 class="sub-title">Alkyl Groups</h3>
+        <table><tr><th>Alkyl Group</th><th>Structure</th></tr>
+          <tr><td>Methyl</td><td>–CH₃</td></tr>
+          <tr><td>Ethyl</td><td>–CH₂–CH₃</td></tr>
+          <tr><td>Propyl</td><td>–CH₂–CH₂–CH₃</td></tr></table>
+        <h3 class="sub-title">2. Unsaturated Hydrocarbons</h3>
+        <div class="formula-box">Alkene = root + hyphen + locant of double bond + hyphen + ene</div>
+        <div class="formula-box">Alkyne = root + hyphen + locant of triple bond + hyphen + yne</div>
+        <ul>
+          <li>CH₂=CH–CH₂–CH₃ → <b>But-1-ene</b></li>
+          <li>CH₃–CH=CH–CH₃ → <b>But-2-ene</b></li>
+          <li>CH≡C–CH₂–CH₃ → <b>But-1-yne</b></li>
+        </ul>
+        <h3 class="sub-title">3. Functional Group Suffixes</h3>
+        <table><tr><th>Functional Group</th><th>Common Name</th><th>Rule</th></tr>
+          <tr><td>–OH</td><td>Alcohol</td><td>Alkane–e+ol→Alkanol</td></tr>
+          <tr><td>–COOH</td><td>Carboxylic acid</td><td>Alkane–e+oic acid→Alkanoic acid</td></tr>
+          <tr><td>–CHO</td><td>Aldehyde</td><td>Alkane–e+al→Alkanal</td></tr>
+          <tr><td>&gt;C=O</td><td>Ketone</td><td>Alkane–e+one→Alkanone</td></tr></table>
+        <h3 class="sub-title">4. Halo Compounds &amp; Ethers</h3>
+        <div class="formula-box">Locant of halo group + hyphen + halo name + alkane name</div>
+        <p>CH₃–CH₂–CH₂–Cl → <b>1-Chloropropane</b></p>
+        <div class="formula-box">Alkoxy group (–O–R) + alkane name → ether name</div>
+        <p>CH₃–O–CH₂–CH₃ → <b>Methoxyethane</b></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FUNCTIONAL GROUPS ================= -->
+  <section class="panel" id="fgroups">
+    <div class="card">
+      <div class="lang-ml">
+        <h2 class="section-title">ഫങ്ഷണൽ ഗ്രൂപ്പുകൾ — സമ്പൂർണ പട്ടിക</h2>
+        <table><tr><th>ഗ്രൂപ്പ്</th><th>പേര്</th><th>പൊതു നാമം</th><th>പ്രത്യയം</th><th>ഉദാ.</th></tr>
+          <tr><td>–OH</td><td>ഹൈഡ്രോക്സിൽ</td><td>ആൽക്കഹോൾ</td><td>–ol</td><td>CH₃OH മെഥനോൾ</td></tr>
+          <tr><td>–COOH</td><td>കാർബോക്സിൽ</td><td>കാർബോക്സിലിക് ആസിഡ്</td><td>–oic acid</td><td>CH₃COOH എഥനോയിക് ആസിഡ്</td></tr>
+          <tr><td>–CHO</td><td>ആൽഡിഹൈഡ്</td><td>ആൽഡിഹൈഡ്</td><td>–al</td><td>CH₃CHO എഥനാൽ</td></tr>
+          <tr><td>&gt;C=O</td><td>കീറ്റോ</td><td>കീറ്റോൺ</td><td>–one</td><td>CH₃COCH₃ പ്രൊപ്പനോൺ</td></tr>
+          <tr><td>–O–R</td><td>ആൽക്കോക്സി</td><td>ഈഥർ</td><td>alkoxy–</td><td>CH₃OCH₃ മീഥോക്സിമീഥെയ്ൻ</td></tr>
+          <tr><td>–F,–Cl,–Br,–I</td><td>ഹാലോ</td><td>ഹാലോ സംയുക്തങ്ങൾ</td><td>halo–</td><td>CH₃CH₂Cl ക്ലോറോഈഥെയ്ൻ</td></tr></table>
+        <h3 class="sub-title">അരോമാറ്റിക് സംയുക്തങ്ങൾ</h3>
+        <table><tr><th>സംയുക്തം</th><th>ഘടന</th><th>ഫോർമുല</th></tr>
+          <tr><td>ബെൻസീൻ</td><td>ആറംഗ വലയം, ഒന്നിടവിട്ട ദ്വിബന്ധനങ്ങൾ</td><td>C₆H₆</td></tr>
+          <tr><td>ഫീനോൾ</td><td>ബെൻസീൻ വലയത്തിൽ –OH</td><td>C₆H₅–OH</td></tr>
+          <tr><td>ബെൻസോയിക് ആസിഡ്</td><td>ബെൻസീൻ വലയത്തിൽ –COOH</td><td>C₆H₅–COOH</td></tr></table>
+      </div>
+      <div class="lang-en">
+        <h2 class="section-title">Functional Groups — Complete Table</h2>
+        <table><tr><th>Group</th><th>Name</th><th>Common Name</th><th>Suffix</th><th>Ex.</th></tr>
+          <tr><td>–OH</td><td>Hydroxyl</td><td>Alcohol</td><td>–ol</td><td>CH₃OH Methanol</td></tr>
+          <tr><td>–COOH</td><td>Carboxyl</td><td>Carboxylic acid</td><td>–oic acid</td><td>CH₃COOH Ethanoic acid</td></tr>
+          <tr><td>–CHO</td><td>Aldehyde</td><td>Aldehyde</td><td>–al</td><td>CH₃CHO Ethanal</td></tr>
+          <tr><td>&gt;C=O</td><td>Keto</td><td>Ketone</td><td>–one</td><td>CH₃COCH₃ Propanone</td></tr>
+          <tr><td>–O–R</td><td>Alkoxy</td><td>Ether</td><td>alkoxy–</td><td>CH₃OCH₃ Methoxymethane</td></tr>
+          <tr><td>–F,–Cl,–Br,–I</td><td>Halo</td><td>Halo compounds</td><td>halo–</td><td>CH₃CH₂Cl Chloroethane</td></tr></table>
+        <h3 class="sub-title">Aromatic Compounds</h3>
+        <table><tr><th>Compound</th><th>Structure</th><th>Formula</th></tr>
+          <tr><td>Benzene</td><td>Six-membered ring, alternating double bonds</td><td>C₆H₆</td></tr>
+          <tr><td>Phenol</td><td>Benzene ring with –OH</td><td>C₆H₅–OH</td></tr>
+          <tr><td>Benzoic acid</td><td>Benzene ring with –COOH</td><td>C₆H₅–COOH</td></tr></table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ISOMERISM ================= -->
+  <section class="panel" id="isomer">
+    <div class="card">
+      <div class="lang-ml">
+        <h2 class="section-title">ഐസോമെറിസം — തരങ്ങൾ</h2>
+        <p><b>നിർവചനം:</b> ഒരേ തന്മാത്രാസൂത്രവും വ്യത്യസ്ത ഗുണങ്ങളുമുള്ള സംയുക്തങ്ങൾ ഐസോമെറുകൾ.</p>
+        <h3 class="sub-title">1. ചെയിൻ ഐസോമെറിസം</h3>
+        <div class="chain">CH₃CH₂CH₂CH₃ (n-ബ്യൂട്ടെയ്ൻ)</div>
+        <div class="chain">CH₃CH(CH₃)CH₃ (2-മീഥൈൽപ്രൊപ്പെയ്ൻ)</div>
+        <h3 class="sub-title">2. പൊസിഷൻ ഐസോമെറിസം</h3>
+        <div class="chain">CH₃CH₂CH₂OH (പ്രൊപ്പൻ-1-ഓൾ)</div>
+        <div class="chain">CH₃CH(OH)CH₃ (പ്രൊപ്പൻ-2-ഓൾ)</div>
+        <h3 class="sub-title">3. ഫങ്ഷണൽ ഐസോമെറിസം</h3>
+        <div class="chain">CH₃CH₂OH (എഥനോൾ)</div>
+        <div class="chain">CH₃–O–CH₃ (മീഥോക്സിമീഥെയ്ൻ)</div>
+        <h3 class="sub-title">4. മെറ്റാമെറിസം</h3>
+        <div class="chain">CH₃CH₂–O–CH₂CH₃ (ഈഥോക്സിഈഥെയ്ൻ)</div>
+        <div class="chain">CH₃–O–CH₂CH₂CH₃ (മീഥോക്സിപ്രൊപ്പെയ്ൻ)</div>
+      </div>
+      <div class="lang-en">
+        <h2 class="section-title">Isomerism — Types</h2>
+        <p><b>Definition:</b> Compounds with the same molecular formula but different properties are isomers.</p>
+        <h3 class="sub-title">1. Chain Isomerism</h3>
+        <div class="chain">CH₃CH₂CH₂CH₃ (n-butane)</div>
+        <div class="chain">CH₃CH(CH₃)CH₃ (2-methylpropane)</div>
+        <h3 class="sub-title">2. Position Isomerism</h3>
+        <div class="chain">CH₃CH₂CH₂OH (propan-1-ol)</div>
+        <div class="chain">CH₃CH(OH)CH₃ (propan-2-ol)</div>
+        <h3 class="sub-title">3. Functional Isomerism</h3>
+        <div class="chain">CH₃CH₂OH (ethanol)</div>
+        <div class="chain">CH₃–O–CH₃ (methoxymethane)</div>
+        <h3 class="sub-title">4. Metamerism</h3>
+        <div class="chain">CH₃CH₂–O–CH₂CH₃ (ethoxyethane)</div>
+        <div class="chain">CH₃–O–CH₂CH₂CH₃ (methoxypropane)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section class="panel" id="quiz">
+    <div class="card no-print">
+      <h2 class="section-title" data-ml="ക്വിക്ക് ക്വിസ്" data-en="Quick Quiz">ക്വിക്ക് ക്വിസ്</h2>
+      <div class="score-bar">
+        <span>
+          <span data-ml="സ്കോർ:" data-en="Score:">സ്കോർ:</span> <b id="scoreVal">0</b> / <span id="totalVal">0</span>
+          &nbsp;·&nbsp; <span data-ml="ചോദ്യം" data-en="Question">ചോദ്യം</span> <b id="qPos">1</b> / <span id="qTotal">0</span>
+        </span>
+        <span style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn" onclick="shareScore()" data-ml="🔗 സ്കോർ പങ്കിടുക" data-en="🔗 Share Score">🔗 സ്കോർ പങ്കിടുക</button>
+          <button class="btn secondary" onclick="resetQuiz()" data-ml="വീണ്ടും ചെയ്യുക" data-en="Retry">വീണ്ടും ചെയ്യുക</button>
+        </span>
+      </div>
+      <div class="teacher-share no-print">
+        <button class="btn" onclick="shareQuizLink()" data-ml="🔗 ക്വിസ് ലിങ്ക് പങ്കിടുക" data-en="🔗 Share Quiz Link">🔗 ക്വിസ് ലിങ്ക് പങ്കിടുക</button>
+        <button class="btn secondary" onclick="shareQuestions()" data-ml="📤 ചോദ്യങ്ങൾ ടെക്സ്റ്റ് ആയി അയക്കുക" data-en="📤 Send Questions as Text">📤 ചോദ്യങ്ങൾ ടെക്സ്റ്റ് ആയി അയക്കുക</button>
+      </div>
+      <div id="quizContainer"></div>
+      <div class="quiz-nav">
+        <button class="btn secondary" id="prevBtn" onclick="prevQuestion()" data-ml="← മുമ്പത്തേത്" data-en="← Previous">← മുമ്പത്തേത്</button>
+        <button class="btn" id="nextBtn" onclick="nextQuestion()" data-ml="അടുത്തത് →" data-en="Next →">അടുത്തത് →</button>
+      </div>
+      <div id="shareToast" class="share-toast"></div>
+    </div>
+  </section>
+
+  <!-- ================= MODEL QUESTION PAPER ================= -->
+  <section class="panel" id="mqp">
+    <div class="card print-target" id="mqpCard">
+      <div class="lang-ml">
+        <div class="mqp-header">
+          <h2>രസതന്ത്രം — മാതൃകാ ചോദ്യപേപ്പർ</h2>
+          <p>യൂണിറ്റ് 1: ഓർഗാനിക് സംയുക്തങ്ങളുടെ നാമകരണവും ഐസോമെറിസവും</p>
+        </div>
+        <div class="mqp-meta"><span>സമയം: 45 മിനിറ്റ്</span><span>ആകെ സ്കോർ: 20</span></div>
+        <div class="mqp-section-title">Section A — 1 സ്കോർ വീതം (5 × 1 = 5)</div>
+        <div class="mqp-q">1. –COOH ഫങ്ഷണൽ ഗ്രൂപ്പുള്ള സംയുക്തങ്ങളെ എന്ത് പേരിൽ അറിയപ്പെടുന്നു?</div>
+        <div class="mqp-q">2. CH₃–CH₂–CH₂–CH₃ എന്ന സംയുക്തത്തിന്റെ IUPAC നാമം എഴുതുക.</div>
+        <div class="mqp-q">3. ഈഥറുകളിലെ ഫങ്ഷണൽ ഗ്രൂപ്പ് ഏത്?</div>
+        <div class="mqp-q">4. ദ്വിബന്ധനമുള്ള ഹൈഡ്രോകാർബണുകളുടെ പിൻപ്രത്യയം എന്ത്?</div>
+        <div class="mqp-q">5. ഐസോമെറിസം എന്നാൽ എന്ത്?</div>
+        <div class="mqp-section-title">Section B — 2 സ്കോർ വീതം (4 × 2 = 8)</div>
+        <div class="mqp-q">6. CH₃–CH(CH₃)–CH₂–CH₃ എന്ന സംയുക്തത്തിന്റെ IUPAC നാമം കണ്ടെത്തുക.</div>
+        <div class="mqp-q">7. 2,3–ഡൈമീഥൈൽപെന്റെയ്ൻ എന്ന സംയുക്തത്തിന്റെ ഘടനാവാക്യം എഴുതുക.</div>
+        <div class="mqp-q">8. ചെയിൻ ഐസോമെറിസവും പൊസിഷൻ ഐസോമെറിസവും തമ്മിലുള്ള വ്യത്യാസം എന്ത്?</div>
+        <div class="mqp-q">9. CH₃CH₂OH ഉം CH₃OCH₃ ഉം ഏത് തരം ഐസോമെറിസം പ്രദർശിപ്പിക്കുന്നു?</div>
+        <div class="mqp-section-title">Section C — 3 സ്കോർ വീതം (2 × 3 = 6)</div>
+        <div class="mqp-q">10. താഴെ നൽകിയിരിക്കുന്ന ഹൈഡ്രോകാർബണിന്റെ IUPAC നാമം കണ്ടെത്തുക:<br><span class="chain">CH₃–CH₂–CH(CH₃)–CH₂–CH₃</span></div>
+        <div class="mqp-q">11. ഫങ്ഷണൽ ഗ്രൂപ്പ് എന്നാൽ എന്ത്? മൂന്ന് ഫങ്ഷണൽ ഗ്രൂപ്പുകളും അവയുടെ പൊതു നാമവും എഴുതുക.</div>
+        <div class="mqp-section-title">Section D — ഉപന്യാസ തരം (1 × 1 = 1)</div>
+        <div class="mqp-q">12. പെന്റെയ്നിന്റെ (C₅H₁₂) മൂന്ന് ചെയിൻ ഐസോമെറുകളുടെയും ഘടനാവാക്യങ്ങളും IUPAC നാമങ്ങളും എഴുതുക.</div>
+      </div>
+      <div class="lang-en">
+        <div class="mqp-header">
+          <h2>Chemistry — Model Question Paper</h2>
+          <p>Unit 1: Nomenclature &amp; Isomerism of Organic Compounds</p>
+        </div>
+        <div class="mqp-meta"><span>Time: 45 minutes</span><span>Total score: 20</span></div>
+        <div class="mqp-section-title">Section A — 1 score each (5 × 1 = 5)</div>
+        <div class="mqp-q">1. What are compounds with the –COOH functional group called?</div>
+        <div class="mqp-q">2. Write the IUPAC name of CH₃–CH₂–CH₂–CH₃.</div>
+        <div class="mqp-q">3. Which functional group is present in ethers?</div>
+        <div class="mqp-q">4. What is the suffix for hydrocarbons with a double bond?</div>
+        <div class="mqp-q">5. What is isomerism?</div>
+        <div class="mqp-section-title">Section B — 2 scores each (4 × 2 = 8)</div>
+        <div class="mqp-q">6. Find the IUPAC name of CH₃–CH(CH₃)–CH₂–CH₃.</div>
+        <div class="mqp-q">7. Write the structural formula of 2,3-dimethylpentane.</div>
+        <div class="mqp-q">8. What is the difference between chain and position isomerism?</div>
+        <div class="mqp-q">9. What type of isomerism do CH₃CH₂OH and CH₃OCH₃ show?</div>
+        <div class="mqp-section-title">Section C — 3 scores each (2 × 3 = 6)</div>
+        <div class="mqp-q">10. Find the IUPAC name of the following hydrocarbon:<br><span class="chain">CH₃–CH₂–CH(CH₃)–CH₂–CH₃</span></div>
+        <div class="mqp-q">11. What is a functional group? Write any three functional groups and their common names.</div>
+        <div class="mqp-section-title">Section D — Essay type (1 × 1 = 1)</div>
+        <div class="mqp-q">12. Write the structural formulas and IUPAC names of all three chain isomers of pentane (C₅H₁₂).</div>
+      </div>
+    </div>
+    <div class="no-print" style="margin-top:10px;">
+      <button class="btn secondary" onclick="printCurrent()" data-ml="🖨️ പ്രിന്റ് ചെയ്യുക" data-en="🖨️ Print">🖨️ പ്രിന്റ് ചെയ്യുക</button>
+    </div>
+  </section>
+
+</div>
+
+<footer class="note" data-ml="Abacus Academy · Class 10 Chemistry · Prepared for self-study" data-en="Abacus Academy · Class 10 Chemistry · Prepared for self-study">Abacus Academy · Class 10 Chemistry · Prepared for self-study</footer>
+
+<script>
+/* ===================== LANGUAGE TOGGLE ===================== */
+let currentLang = 'ml';
+function setLang(lang){
+  currentLang = lang;
+  document.body.classList.toggle('show-en', lang === 'en');
+  document.getElementById('langMlBtn').classList.toggle('active', lang === 'ml');
+  document.getElementById('langEnBtn').classList.toggle('active', lang === 'en');
+  document.querySelectorAll('[data-ml][data-en]').forEach(el=>{
+    el.textContent = (lang === 'ml') ? el.dataset.ml : el.dataset.en;
+  });
+  quizData = (lang === 'ml') ? quizDataML : quizDataEN;
+  renderQuestion();
+}
+
+/* ===================== TABS ===================== */
+const tabButtons = document.querySelectorAll('nav.tabs button[data-tab]');
+const panels = document.querySelectorAll('.panel');
+let currentTab = 'notes';
+tabButtons.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    tabButtons.forEach(b=>b.classList.remove('active'));
+    panels.forEach(p=>{p.classList.remove('active'); p.classList.remove('print-target');});
+    btn.classList.add('active');
+    currentTab = btn.dataset.tab;
+    document.getElementById(currentTab).classList.add('active');
+  });
+});
+function printCurrent(){
+  panels.forEach(p=>p.classList.remove('print-target'));
+  document.getElementById(currentTab).classList.add('print-target');
+  window.print();
+}
+
+/* ===================== QUIZ DATA (bilingual) ===================== */
+const quizDataML = [
+  { q:"CH₃–CH₂–CH₂–CH₂–CH₃ എന്ന സംയുക്തത്തിന്റെ IUPAC നാമം?", opts:["ബ്യൂട്ടെയ്ൻ","പെന്റെയ്ൻ","ഹെക്സെയ്ൻ","പ്രൊപ്പെയ്ൻ"], ans:1 },
+  { q:"–OH ഫങ്ഷണൽ ഗ്രൂപ്പുള്ള സംയുക്തങ്ങളെ എന്ത് പേരിൽ അറിയപ്പെടുന്നു?", opts:["ആൽഡിഹൈഡ്","കീറ്റോൺ","ആൽക്കഹോൾ","ഈഥർ"], ans:2 },
+  { q:"CH₂=CH–CH₂–CH₃ എന്ന സംയുക്തത്തിന്റെ IUPAC നാമം?", opts:["ബ്യൂട്ട്–2–ഈൻ","ബ്യൂട്ട്–1–ഈൻ","ബ്യൂട്ട്–1–ഐൻ","പ്രൊപ്പീൻ"], ans:1 },
+  { q:"ത്രിബന്ധനമുള്ള ഹൈഡ്രോകാർബണുകളുടെ പിൻപ്രത്യയം ഏത്?", opts:["–ol","–ene","–yne","–al"], ans:2 },
+  { q:"CH₃COOH ന്റെ പൊതു നാമം?", opts:["ആൽഡിഹൈഡ്","കാർബോക്സിലിക് ആസിഡ്","കീറ്റോൺ","ഈഥർ"], ans:1 },
+  { q:"CH₃CH₂OH ഉം CH₃OCH₃ ഉം തമ്മിൽ ഏത് തരം ഐസോമെറിസം?", opts:["ചെയിൻ ഐസോമെറിസം","പൊസിഷൻ ഐസോമെറിസം","ഫങ്ഷണൽ ഐസോമെറിസം","മെറ്റാമെറിസം"], ans:2 },
+  { q:"CH₃CH₂CH₂OH, CH₃CH(OH)CH₃ ഇവ ഏത് തരം ഐസോമെറിസം?", opts:["ചെയിൻ ഐസോമെറിസം","പൊസിഷൻ ഐസോമെറിസം","ഫങ്ഷണൽ ഐസോമെറിസം","മെറ്റാമെറിസം"], ans:1 },
+  { q:">C=O ഫങ്ഷണൽ ഗ്രൂപ്പുള്ള സംയുക്തങ്ങൾ ഏതെല്ലാം?", opts:["ആൽക്കഹോളുകൾ","കീറ്റോണുകൾ","ഈഥറുകൾ","ഹാലോ സംയുക്തങ്ങൾ"], ans:1 },
+  { q:"CH₃–O–CH₂–CH₃ ഏത് ഫങ്ഷണൽ ഗ്രൂപ്പ് കുടുംബത്തിൽപ്പെടുന്നു?", opts:["ആൽഡിഹൈഡ്","കീറ്റോൺ","ഈഥർ","കാർബോക്സിലിക് ആസിഡ്"], ans:2 },
+  { q:"ഇരുവശവുമുള്ള ആൽക്കൈൽ ഗ്രൂപ്പ് വ്യത്യാസമുള്ള ഐസോമെറിസം ഏത്?", opts:["ചെയിൻ ഐസോമെറിസം","ഫങ്ഷണൽ ഐസോമെറിസം","മെറ്റാമെറിസം","പൊസിഷൻ ഐസോമെറിസം"], ans:2 }
+];
+const quizDataEN = [
+  { q:"What is the IUPAC name of CH₃–CH₂–CH₂–CH₂–CH₃?", opts:["Butane","Pentane","Hexane","Propane"], ans:1 },
+  { q:"Compounds with the –OH functional group are called?", opts:["Aldehyde","Ketone","Alcohol","Ether"], ans:2 },
+  { q:"What is the IUPAC name of CH₂=CH–CH₂–CH₃?", opts:["But-2-ene","But-1-ene","But-1-yne","Propene"], ans:1 },
+  { q:"What is the suffix for hydrocarbons with a triple bond?", opts:["–ol","–ene","–yne","–al"], ans:2 },
+  { q:"What is the common name for CH₃COOH?", opts:["Aldehyde","Carboxylic acid","Ketone","Ether"], ans:1 },
+  { q:"What type of isomerism do CH₃CH₂OH and CH₃OCH₃ show?", opts:["Chain isomerism","Position isomerism","Functional isomerism","Metamerism"], ans:2 },
+  { q:"What type of isomerism do CH₃CH₂CH₂OH and CH₃CH(OH)CH₃ show?", opts:["Chain isomerism","Position isomerism","Functional isomerism","Metamerism"], ans:1 },
+  { q:"Which compounds have the &gt;C=O functional group?", opts:["Alcohols","Ketones","Ethers","Halo compounds"], ans:1 },
+  { q:"Which functional group family does CH₃–O–CH₂–CH₃ belong to?", opts:["Aldehyde","Ketone","Ether","Carboxylic acid"], ans:2 },
+  { q:"Which isomerism has different alkyl groups on either side of the same functional group?", opts:["Chain isomerism","Functional isomerism","Metamerism","Position isomerism"], ans:2 }
+];
+let quizData = quizDataML;
+
+let score = 0;
+let currentQ = 0;
+let userAnswers = new Array(quizDataML.length).fill(null);
+
+function renderQuestion(){
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = '';
+  document.getElementById('totalVal').textContent = quizData.length;
+  document.getElementById('qTotal').textContent = quizData.length;
+  document.getElementById('qPos').textContent = currentQ + 1;
+
+  const item = quizData[currentQ];
+  const qDiv = document.createElement('div');
+  qDiv.innerHTML = `<p><b>${currentQ+1}.</b> ${item.q}</p><div class="quiz-opts"></div>`;
+  const optsDiv = qDiv.querySelector('.quiz-opts');
+  const alreadyAnswered = userAnswers[currentQ] !== null;
+
+  item.opts.forEach((opt, oIdx)=>{
+    const b = document.createElement('button');
+    b.textContent = opt;
+    if(alreadyAnswered){
+      b.disabled = true;
+      if(oIdx === item.ans) b.classList.add('correct');
+      else if(oIdx === userAnswers[currentQ]) b.classList.add('wrong');
+    }
+    b.addEventListener('click', ()=>{
+      if(b.disabled) return;
+      const allBtns = optsDiv.querySelectorAll('button');
+      allBtns.forEach(x=>x.disabled=true);
+      userAnswers[currentQ] = oIdx;
+      if(oIdx === item.ans){ b.classList.add('correct'); score++; }
+      else { b.classList.add('wrong'); allBtns[item.ans].classList.add('correct'); }
+      document.getElementById('scoreVal').textContent = score;
+    });
+    optsDiv.appendChild(b);
+  });
+  container.appendChild(qDiv);
+  document.getElementById('prevBtn').disabled = (currentQ === 0);
+  document.getElementById('nextBtn').disabled = (currentQ === quizData.length - 1);
+}
+
+function nextQuestion(){ if(currentQ < quizData.length - 1){ currentQ++; renderQuestion(); } }
+function prevQuestion(){ if(currentQ > 0){ currentQ--; renderQuestion(); } }
+
+function resetQuiz(){
+  score = 0; currentQ = 0;
+  userAnswers = new Array(quizData.length).fill(null);
+  document.getElementById('scoreVal').textContent = 0;
+  renderQuestion();
+}
+
+/* ===================== SHARE ===================== */
+const QUIZ_SHARE_URL = "https://munees-dot.github.io/sscstudychemistry/quiz_share.html";
+
+function shareQuizLink(){
+  if(!QUIZ_SHARE_URL){
+    const toast = document.getElementById('shareToast');
+    toast.textContent = currentLang === 'ml' ? '⚠️ ക്വിസ് ലിങ്ക് ഇതുവരെ സെറ്റ് ചെയ്തിട്ടില്ല' : '⚠️ Quiz link has not been set yet';
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'), 3000);
+    return;
+  }
+  const text = currentLang === 'ml'
+    ? `ക്വിക്ക് ക്വിസ് — ഓർഗാനിക് നാമകരണവും ഐസോമെറിസവും\nഈ ലിങ്കിൽ ക്വിസ് ചെയ്യൂ:\n${QUIZ_SHARE_URL}`
+    : `Quick Quiz — Nomenclature & Isomerism of Organic Compounds\nTake the quiz here:\n${QUIZ_SHARE_URL}`;
+  runShare(text, currentLang === 'ml' ? '✅ ലിങ്ക് കോപ്പി ചെയ്തു' : '✅ Link copied');
+}
+
+function shareScore(){
+  const answeredCount = userAnswers.filter(a=>a!==null).length;
+  const text = currentLang === 'ml'
+    ? `ഓർഗാനിക് നാമകരണവും ഐസോമെറിസവും — ക്വിക്ക് ക്വിസ്\nഎന്റെ സ്കോർ: ${score} / ${quizData.length} (${answeredCount} ചോദ്യങ്ങൾക്ക് ഉത്തരം നൽകി)`
+    : `Nomenclature & Isomerism of Organic Compounds — Quick Quiz\nMy score: ${score} / ${quizData.length} (${answeredCount} questions answered)`;
+  runShare(text, currentLang === 'ml' ? '✅ സ്കോർ കോപ്പി ചെയ്തു' : '✅ Score copied');
+}
+
+function shareQuestions(){
+  const letters = ['A','B','C','D'];
+  let text = currentLang === 'ml'
+    ? 'ക്വിക്ക് ക്വിസ് — ഓർഗാനിക് നാമകരണവും ഐസോമെറിസവും\n(യൂണിറ്റ് 1, രസതന്ത്രം, സ്റ്റാൻഡേർഡ് 10)\n\n'
+    : 'Quick Quiz — Nomenclature & Isomerism of Organic Compounds\n(Unit 1, Chemistry, Class 10)\n\n';
+  quizData.forEach((item, idx)=>{
+    text += `${idx+1}. ${item.q}\n`;
+    item.opts.forEach((opt, oIdx)=>{ text += `   ${letters[oIdx]}) ${opt}\n`; });
+    text += '\n';
+  });
+  runShare(text, currentLang === 'ml' ? '✅ ചോദ്യങ്ങൾ കോപ്പി ചെയ്തു' : '✅ Questions copied');
+}
+
+function runShare(text, copySuccessMsg){
+  if(navigator.share){
+    navigator.share({ title: currentLang === 'ml' ? 'ക്വിക്ക് ക്വിസ്' : 'Quick Quiz', text: text }).catch(()=>{});
+  } else if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(()=>{
+      const toast = document.getElementById('shareToast');
+      toast.textContent = copySuccessMsg;
+      toast.classList.add('show');
+      setTimeout(()=>toast.classList.remove('show'), 2500);
+    });
+  } else {
+    alert(text);
+  }
+}
+
+renderQuestion();
+</script>
+
+</body>
+</html>
